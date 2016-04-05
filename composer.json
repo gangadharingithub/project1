@@ -1,0 +1,13 @@
+{
+	"name" : "vendor/project1",
+	"description" : "Description of project project1.",
+	"authors" : [{
+			"name" : "ganga",
+			"email" : "mailme.m.gangadhar@gmail.com"
+		}
+	],
+	"require" : {
+		"phpunit/phpunit" : "4.3.*",
+		"phpmd/phpmd" : "@stable"
+	}
+}
