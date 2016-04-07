@@ -75,14 +75,9 @@
 		</artifact:mvn>
 	</target>
 
-	<target name="sonar" depends="build" description="Code coverage using Sonar">
-		<echo message="Code coverage using sonar...." />
-		<!--<exec executable="/local/mnt/sonar-runner-2.4/bin/sonar-runner" failonerror="true" >-->
-		<exec executable="/Users/gangadhar/Desktop/bahar/php/sonar-runner-2.4/bin/sonar-runner" failonerror="true">
-			<arg line="-Dsonar.projectKey=${project.groupId}:${project.artifactId}" />
-			<arg line="-Dsonar.projectName=${project.artifactId}" />
-			<arg line="-Dsonar.projectVersion=${project.version}" />
-		</exec>
+	<target name="sonar" depends="build" description="Code Analysis using Sonar">
+		<echo message="Code Analysis using Sonar...." />
+		<exec executable="/Users/gangadhar/Desktop/bahar/php/sonar-scanner-2.5.1/bin/sonar-runner" failonerror="true"/>
 	</target>
 
 	<target name="build" depends="lint,phpunit,phpmd">
@@ -110,11 +105,11 @@
 	
 	<target name="clean" description="Clean build artifacts">
 		<echo message="cleaning all artifacts....." level="info" />
-		<delete dir="${builddir}/coverage" />
-		<delete dir="${builddir}/logs" />
-		<delete dir="${basedir}/vendor" failonerror="true" />        
-        <delete dir="${basedir}/build" failonerror="true" /> 
-        <delete dir="${basedir}/dist" failonerror="true" />     
+		<delete dir="${basedir}/.sonar" failonerror="true"/>
+		<delete dir="${builddir}/logs" failonerror="true"/>
+		<delete dir="${basedir}/vendor" failonerror="true"/>        
+        <delete dir="${basedir}/build" failonerror="true"/>
+        <delete dir="${basedir}/dist" failonerror="true"/>     
 	</target>
 
 	<target name="prepare" depends="clean" description="Prepare for build">
@@ -145,12 +140,11 @@
 			<arg value="update" />
 		</exec>
 	</target>
-
-	<target name="phpunit" depends="vendors">
-	     <exec executable="${basedir}/vendor/bin/phpunit" >   
-	        <arg line="--verbose --log-junit ${basedir}/build/logs/phpunit.xml 
-	                   --coverage-clover ${basedir}/build/logs/clover.xml 
-	                   --coverage-html ${basedir}/build/coverage tests" />
+	
+	 <target name="phpunit" depends="vendors">
+	 	 <echo message="unie tests and code coverage for ${basedir}" level="info" />
+	     <exec executable="${basedir}/vendor/bin/phpunit">   
+	        <arg line=" --verbose --log-junit ${basedir}/reports/phpunit.xml --coverage-clover ${basedir}/reports/clover.xml tests/"/>
 	    </exec>
 	</target>
 	
